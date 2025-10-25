@@ -1,38 +1,118 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
   <base href="$FLUTTER_BASE_HREF">
-
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
-
-  <!-- iOS meta tags & icons -->
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="final_ammonation_project">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
-
-  <title>final_ammonation_project</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ammonition Project</title>
   <link rel="manifest" href="manifest.json">
+
+  <style>
+    body {
+      margin: 0;
+      background-color: #f5f5f5;
+    }
+  </style>
 </head>
 <body>
-  <script src="flutter_bootstrap.js" async></script>
+<script>
+  // Custom logging function - logs only to browser console
+  function addLog(message, type = 'info') {
+    console.log(`[${type.toUpperCase()}] ${message}`);
+  }
+
+  addLog('Starting application...', 'info');
+</script>
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+
+<script>
+  addLog('Firebase scripts loaded', 'success');
+
+  // Check if firebase is available
+  if (typeof firebase === 'undefined') {
+    addLog('ERROR: Firebase not loaded!', 'error');
+  } else {
+    addLog('Firebase object found', 'success');
+  }
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyBc8iNDNOEvYkVk-JleOv4_Qe-EeZvj9Ok",
+    authDomain: "ammonition-project.firebaseapp.com",
+    projectId: "ammonition-project",
+    storageBucket: "ammonition-project.firebasestorage.app",
+    messagingSenderId: "791535158783",
+    appId: "1:791535158783:web:45e402e9c6213597d553ca",
+    measurementId: "G-8B2ER9JQ7L"
+  };
+
+  addLog('Firebase config loaded', 'info');
+
+  try {
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    addLog('Firebase initialized successfully!', 'success');
+    addLog(`Project: ${firebaseConfig.projectId}`, 'info');
+  } catch (error) {
+    addLog(`Firebase init error: ${error.message}`, 'error');
+    console.error('Detailed error:', error);
+  }
+</script>
+
+<script>
+  // Define serviceWorkerVersion if not available
+  var serviceWorkerVersion = null;
+</script>
+
+<script src="flutter.js" defer></script>
+<script>
+  addLog('Waiting for page load...', 'info');
+
+  window.addEventListener('load', function(ev) {
+    addLog('Page loaded! Starting Flutter...', 'success');
+
+    if (typeof _flutter === 'undefined') {
+      addLog('ERROR: _flutter not found!', 'error');
+      return;
+    }
+
+    addLog('Flutter loader found', 'success');
+
+    _flutter.loader.loadEntrypoint({
+      serviceWorker: {
+        serviceWorkerVersion: serviceWorkerVersion || null,
+      },
+      onEntrypointLoaded: function(engineInitializer) {
+        addLog('Flutter entrypoint loaded', 'success');
+
+        engineInitializer.initializeEngine().then(function(appRunner) {
+          addLog('Flutter engine initialized', 'success');
+          addLog('Running Flutter app...', 'info');
+
+          appRunner.runApp();
+
+          addLog('✅ App should be running now!', 'success');
+
+        }).catch(function(error) {
+          addLog(`Engine init error: ${error.message}`, 'error');
+          console.error('Engine error:', error);
+        });
+      }
+    }).catch(function(error) {
+      addLog(`Entrypoint error: ${error.message}`, 'error');
+      console.error('Entrypoint error:', error);
+    });
+  });
+
+  // Catch any unhandled errors
+  window.addEventListener('error', function(event) {
+    addLog(`Global error: ${event.message}`, 'error');
+    console.error('Global error:', event);
+  });
+</script>
 </body>
 </html>
