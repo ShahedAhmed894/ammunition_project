@@ -1,16 +1,15 @@
+import 'package:final_ammonation_project/data_get.dart';
+import 'package:final_ammonation_project/nid_varification/qrcod_scanner.dart';
+import 'package:final_ammonation_project/payment_gateway/payment_gateway.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'auth/login_page.dart';
 
 void main() async {
-  print('================================');
-  print('🚀 APP STARTING');
-  print('================================');
-  print('Platform: ${kIsWeb ? "WEB" : "MOBILE"}');
 
   WidgetsFlutterBinding.ensureInitialized();
-  print('✅ Flutter binding initialized');
+
 
   try {
     if (kIsWeb) {
@@ -38,9 +37,6 @@ void main() async {
     print('Stack trace: $stackTrace');
   }
 
-  print('================================');
-  print('🎯 Running MyApp...');
-  print('================================');
 
   runApp(const MyApp());
 }
@@ -58,7 +54,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home: const AppCheckScreen(),
+      home: const MyPayment(),
     );
   }
 }
