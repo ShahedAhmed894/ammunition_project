@@ -1,9 +1,11 @@
 import 'package:final_ammonation_project/data_get.dart';
 import 'package:final_ammonation_project/nid_varification/qrcod_scanner.dart';
 import 'package:final_ammonation_project/payment_gateway/payment_gateway.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'api_ammunation_project.dart';
 import 'auth/login_page.dart';
 
 void main() async {
@@ -54,7 +56,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home: const MyPayment(),
+      home: const Api_ammunation_project(),
     );
   }
 }
