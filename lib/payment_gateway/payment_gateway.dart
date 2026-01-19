@@ -2,7 +2,8 @@ import 'package:aamarpay/aamarpay.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 class MyPayment extends StatefulWidget {
-  const MyPayment({super.key});
+ final double amount;
+  const MyPayment({super.key, required double this.amount});
 
   @override
   State<MyPayment> createState() => _MyPaymentState();
@@ -42,7 +43,7 @@ class _MyPaymentState extends State<MyPayment> {
           customerName: "Riad Rayhan",
           signature: "37da1e291ac2612ee91cd9736e4ce4f5",
           storeID: "subeasy",
-          transactionAmount: "200",
+          transactionAmount: widget.amount.toString(),
 
           transactionID: "${DateTime.now().millisecondsSinceEpoch}",
           description: "test",
