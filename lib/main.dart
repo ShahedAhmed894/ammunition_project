@@ -1,5 +1,4 @@
-import 'package:final_ammonation_project/welcome_page.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +8,7 @@ import 'api_ammunation_project.dart';
 import 'auth/login_page.dart';
 import 'employeelist_page.dart';
 
-void main() async {
-
+Future<void> _initializeApp() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize Notification Service FIRST
@@ -21,7 +19,6 @@ void main() async {
     print('✅ .env file loaded successfully');
   } catch (e) {
     print('❌ Error loading .env file: $e');
-    // App will continue, but any API keys from .env will be missing
   }
 
   try {
@@ -49,8 +46,10 @@ void main() async {
     print('Error: $e');
     print('Stack trace: $stackTrace');
   }
+}
 
-
+void main() async {
+  await _initializeApp();
   runApp(const MyApp());
 }
 

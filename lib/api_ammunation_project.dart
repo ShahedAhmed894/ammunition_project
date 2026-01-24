@@ -167,8 +167,13 @@ class _Api_ammunation_projectState extends State<Api_ammunation_project> {
   void initState() {
     super.initState();
     _apiService = widget.apiService ?? AmmoApiService();
-    fetchData();
-    _startRecurringNotifications();
+    // Defer data fetching to after the first frame is rendered
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        fetchData();
+        _startRecurringNotifications();
+      }
+    });
   }
 
   @override

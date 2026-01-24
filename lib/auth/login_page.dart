@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../api_ammunation_project.dart';
+import '../cruve page.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -13,8 +14,35 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  late FirebaseAuth _auth;
   bool _isLoading = false;
+  bool _firebaseReady = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeFirebase();
+  }
+
+  Future<void> _initializeFirebase() async {
+    try {
+      _auth = FirebaseAuth.instance;
+      print('✅ FirebaseAuth instance obtained in SignInScreen');
+      if (mounted) {
+        setState(() {
+          _firebaseReady = true;
+        });
+      }
+    } catch (e) {
+      print('❌ Error getting FirebaseAuth instance: $e');
+      // Defer dialog to after frame is complete
+      if (mounted) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _showErrorDialog('Firebase not initialized. Please restart the app.');
+        });
+      }
+    }
+  }
 
   void _showErrorDialog(String message) {
     showDialog(
@@ -123,7 +151,7 @@ class _SignInScreenState extends State<SignInScreen> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (_) => Api_ammunation_project(user: user!),
+              builder: (_) => const Curve_page(),
             ),
           );
         }
@@ -154,6 +182,26 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (!_firebaseReady) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text("Initializing..."),
+          backgroundColor: Colors.green,
+          foregroundColor: Colors.white,
+        ),
+        body: const Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(height: 20),
+              Text('Initializing Firebase...'),
+            ],
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Google Sign In"),
